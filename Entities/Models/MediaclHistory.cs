@@ -8,13 +8,13 @@ namespace Entities.Models
     [Table("medicalHistory")]
     public class MedicalHistory
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required(ErrorMessage = "Name is required")]
         [StringLength(80, ErrorMessage = "Name can't be longer than 80 characters")]
         public string NameDisease { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [ForeignKey(nameof(Pet))]
         public Guid PetId { get; set; }

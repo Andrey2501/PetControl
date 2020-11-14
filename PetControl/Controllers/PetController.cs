@@ -27,22 +27,18 @@ namespace PetControlBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetPetById(string id)
+        public IActionResult GetPetById(Guid id)
         {
-            if (id != null && Guid.TryParse(id, out Guid petId))
+            Pet pet = _repoWrapper.Pet
+                .FindByCondition(p => p.Id == id)
+                .FirstOrDefault();
+
+            if (pet == null)
             {
-                Pet pet = _repoWrapper.Pet
-                    .FindByCondition(p => p.Id == petId)
-                    .FirstOrDefault();
-
-                if (pet == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(pet);
+                return NotFound();
             }
-            return BadRequest("PetId is incorrect");
+
+            return Ok(pet);
         }
 
         [HttpGet, Route("list")]
@@ -65,7 +61,7 @@ namespace PetControlBackend.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePet([FromBody] PetViewModel petView)
+        public IActionResult CreatePet([FromBody] PetDto petView)
         {
             if (!ModelState.IsValid)
             {
@@ -76,8 +72,8 @@ namespace PetControlBackend.Controllers
             if (userIdStr != null && Guid.TryParse(userIdStr, out Guid userId))
             {
                 var mapper = new Mapper(new MapperConfiguration(cfg => 
-                    cfg.CreateMap<PetViewModel, Pet>()));
-                Pet pet = mapper.Map<PetViewModel, Pet>(petView);
+                    cfg.CreateMap<PetDto, Pet>()));
+                Pet pet = mapper.Map<PetDto, Pet>(petView);
                 pet.UserId = userId;
 
                 _repoWrapper.Pet.Create(pet);
@@ -90,26 +86,22 @@ namespace PetControlBackend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult RemovePetById(string id)
+        public IActionResult RemovePetById(Guid id)
         {
-            if (id != null && Guid.TryParse(id, out Guid petId))
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Pet pet = _repoWrapper.Pet
+                .FindByCondition(p => p.Id == id && p.UserId.ToString() == userId)
+                .FirstOrDefault();
+
+            if (pet == null)
             {
-                Pet pet = _repoWrapper.Pet
-                    .FindByCondition(p => p.Id == petId)
-                    .FirstOrDefault();
-
-                if (pet == null)
-                {
-                    return NotFound();
-                }
-
-                _repoWrapper.Pet.Delete(pet);
-                _repoWrapper.Save();
-
-                return Ok(new { Success = true });
+                return NotFound();
             }
 
-            return BadRequest("PetId is incorrect");
+            _repoWrapper.Pet.Delete(pet);
+            _repoWrapper.Save();
+
+            return Ok(new { Success = true });
         }
     }
 }

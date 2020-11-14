@@ -8,7 +8,7 @@ namespace Repository
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private RepositoryContext _repoContext;
+        private readonly RepositoryContext _repoContext;
         private IUserRepository _user;
         private IPetRepository _pet;
         private IContactRepository _contact;

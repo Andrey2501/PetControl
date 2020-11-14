@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PetControlBackend.Models.PetModel
 {
-    public class PetViewModel
+    public class PetDto
     {
         [Required(ErrorMessage = "Name is required")]
-        [StringLength(60, MinimumLength = 5, ErrorMessage = "Name can't be longer than 60 characters")]
+        [StringLength(60, ErrorMessage = "Name can't be longer than 60 characters")]
         public string Name { get; set; }
         public string PhotoUrl { get; set; }
 

@@ -30,7 +30,7 @@ namespace PetControlBackend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { error = ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage) });
+                return BadRequest(ModelState);
             }
 
             User user = _repoWrapper.User

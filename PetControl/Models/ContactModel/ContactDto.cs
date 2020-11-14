@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Entities.Models
+namespace PetControlBackend.Models.ContactModel
 {
-    [Table("contact")]
-    public class Contact
+    public class ContactDto
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [Required(ErrorMessage = "Latitude is required")]
         public double Latitude { get; set; }
+
+        [Required]
         public double Longitude { get; set; }
+
+        [Required]
         public DateTime Date { get; set; }
+
+        [Required]
         public Guid FirstPetId { get; set; }
-        public Pet FirstPet { get; set; }
+
+        [Required]
         public Guid SecondPetId { get; set; }
-        public Pet SecondPet { get; set; }
     }
 }

@@ -7,11 +7,17 @@ using System.Text;
 
 namespace Repository
 {
-    class UserRepository : RepositoryBase<User>, IUserRepository
+    public class UserRepository : RepositoryBase<User>, IUserRepository
     {
         public UserRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
         {
+        }
+        public PagedList<User> FindAll(QueryStringParameters parameters)
+        {
+            return PagedList<User>.ToPagedList(FindAll(),
+                parameters.PageNumber,
+                parameters.PageSize);
         }
     }
 }
