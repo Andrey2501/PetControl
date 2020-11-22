@@ -70,30 +70,42 @@ namespace PetControlBackend.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] EditViewModel userEdit)
+        public IActionResult Edit([FromBody] EditViewModel userEditView)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             string role = User.FindFirstValue(ClaimTypes.Role);
 
-            if (userEdit == null || (userEdit.Id.ToString() != id && role != "Admin"))
+            if (userEditView == null || (userEditView.Id.ToString() != id && role != "Admin"))
             {
                 return BadRequest("Editing data is incorrect");
             }
 
-            User user = _repoWrapper.User
-                .FindByCondition(u => u.Id == userEdit.Id)
-                .FirstOrDefault();
+            IEnumerable<User> users = _repoWrapper.User
+                .FindByCondition(u => u.Id == userEditView.Id || u.Email == userEditView.Email)
+                .ToList();
 
-            if (user == null)
+            if (users == null)
             {
                 return NotFound();
             }
+            if (users.Count() != 1)
+            {
+                return BadRequest("Email alredy exist!");
+            }
+            User user = users.First();
 
             var mapper = new Mapper(new MapperConfiguration(cfg =>
                   cfg.CreateMap<EditViewModel, User>()));
-            user = mapper.Map<EditViewModel, User>(userEdit);
+            User userEdit = mapper.Map<EditViewModel, User>(userEditView);
+            userEdit.Password = user.Password;
+            userEdit.Role = user.Role;
 
-            _repoWrapper.User.Update(user);
+            _repoWrapper.User.Update(userEdit);
+            _repoWrapper.Save();
 
             return Ok(new { Success = true });
         }
