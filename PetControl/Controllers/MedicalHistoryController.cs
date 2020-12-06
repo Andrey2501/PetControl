@@ -51,6 +51,12 @@ namespace PetControlBackend.Controllers
             var mapper = new Mapper(config);
             MedicalHistory medicalHistory = mapper.Map<MedicalHistoryDto, MedicalHistory>(medicalHistoryDto);
 
+            if (medicalHistory.EndDate == null)
+            {
+                pet.IsSick = true;
+                _repoWrapper.Pet.Update(pet);
+            }
+
             _repoWrapper.MedicalHistory.Create(medicalHistory);
             _repoWrapper.Save();
 

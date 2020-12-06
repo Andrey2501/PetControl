@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Repository
 {
-    class MedicalHistoryRepository : RepositoryBase<MedicalHistory>, IMedicalHistoryRepository
+    public class MedicalHistoryRepository : RepositoryBase<MedicalHistory>, IMedicalHistoryRepository
     {
         public MedicalHistoryRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)

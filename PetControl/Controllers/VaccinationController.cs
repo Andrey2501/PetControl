@@ -34,7 +34,7 @@ namespace PetControlBackend.Controllers
             return Ok(vaccination);
         }
 
-        [HttpPost]
+       [HttpPost]
         public IActionResult AddVaccination([FromBody] VaccinationDto vaccinationDto)
         {
             if (!ModelState.IsValid)

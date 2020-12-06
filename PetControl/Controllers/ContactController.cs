@@ -7,6 +7,7 @@ using AutoMapper;
 using Contracts;
 using Entities;
 using Entities.Models;
+using Entities.Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,7 +65,7 @@ namespace PetControlBackend.Controllers
         }
 
         [HttpGet("{petId}")]
-        public IActionResult GetContactByPetId(Guid petId, [FromQuery] QueryStringParameters parametrs)
+        public IActionResult GetContactByPetId(Guid petId, [FromQuery] ContactParameters parametrs)
         {
             PagedList<Contact> contacts = _repoWrapper.Contact
                 .FindByCondition(parametrs, c => c.FirstPetId == petId);

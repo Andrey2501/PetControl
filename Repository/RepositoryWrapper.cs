@@ -14,6 +14,8 @@ namespace Repository
         private IContactRepository _contact;
         private IVaccinationRepository _vaccination;
         private IMedicalHistoryRepository _medicalHistory;
+        private INotificationRepository _notification;
+        private INotificationToUsersRepository _notificationToUsers;
         public IUserRepository User
         {
             get
@@ -67,6 +69,29 @@ namespace Repository
                     _medicalHistory = new MedicalHistoryRepository(_repoContext);
                 }
                 return _medicalHistory;
+            }
+        }
+        public INotificationRepository Notification
+        {
+            get
+            {
+                if (_notification == null)
+                {
+                    _notification = new NotificationRepository(_repoContext);
+                }
+                return _notification;
+            }
+        }
+
+        public INotificationToUsersRepository NotificationToUsers
+        {
+            get
+            {
+                if (_notificationToUsers == null)
+                {
+                    _notificationToUsers = new NotificationToUsersRepository(_repoContext);
+                }
+                return _notificationToUsers;
             }
         }
         public RepositoryWrapper(RepositoryContext repositoryContext)

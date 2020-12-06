@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Repository
 {
-    public class VaccinationRepository : RepositoryBase<Vaccination>, IVaccinationRepository
+    class NotificationToUsersRepository : RepositoryBase<NotificationToUsers>, INotificationToUsersRepository
     {
-        public VaccinationRepository(RepositoryContext repositoryContext)
+        public NotificationToUsersRepository(RepositoryContext repositoryContext)
             : base(repositoryContext)
         {
         }

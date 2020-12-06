@@ -48,11 +48,8 @@ namespace PetControlBackend.Controllers
             if (userIdStr != null && Guid.TryParse(userIdStr, out Guid userId))
             {
                 IEnumerable<Pet> pets = _repoWrapper.Pet
-                    .FindByCondition(p => p.UserId == userId);
-                if (pets == null)
-                {
-                    return NotFound();
-                }
+                    .FindByCondition(p => p.UserId == userId)
+                    .ToList();
 
                 return Ok(pets);
             }

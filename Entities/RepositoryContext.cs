@@ -15,5 +15,7 @@ namespace Entities
         public DbSet<Vaccination> Vaccinations { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
+        public DbSet<Notification> Notification { get; set; }
+        public DbSet<NotificationToUsers> NotificationToUsers { get; set; }
     }
 }

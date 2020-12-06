@@ -11,6 +11,8 @@ namespace Contracts
         IVaccinationRepository Vaccination { get; }
         IContactRepository Contact { get; }
         IMedicalHistoryRepository MedicalHistory { get; }
+        INotificationRepository Notification { get; }
+        INotificationToUsersRepository NotificationToUsers { get; }
         void Save();
     }
 }
